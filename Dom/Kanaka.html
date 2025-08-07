@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload & Download Files</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+   
+    <form id="uploadForm" enctype="multipart/form-data">
+ 
+        <div>
+            <input type="text" name="name1" id="name"  placeholder="Enter your name"><br> <br>
+            <input type="text" name="adress1" id="address"  placeholder="Enter your address">
+        </div>
+ 
+        <h2>Upload a File</h2>
+        <input type="file" name="file" id="fileInput" required />
+        <button type="submit">Upload</button>
+    </form>
+ 
+    <p id="responseMessage"></p>
+ 
+    <h3>Uploaded Files</h3>
+    <ul id="fileList"></ul>
+ 
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+ 
+            const name=document.getElementById("name").value
+            const adress=document.getElementById("adress");
+            const fileInput = document.getElementById("fileInput");
+ 
+            console.log(name);
+            console.log(adress);
+           
+ 
+ 
+            if (!fileInput.files.length) {
+                document.getElementById("responseMessage").innerText = "Please select a file.";
+                return;
+            }
+ 
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+ 
+            try {
+                document.getElementById("responseMessage").innerText = "Uploading...";
+                const response = await fetch("http://10.25.0.157:8080/upload", {
+                    method: "POST",
+                    body: formData
+                });
+                const message = await response.text();
+                document.getElementById("responseMessage").innerText = message;
+ 
+                loadFiles();
+            } catch (error) {
+                document.getElementById("responseMessage").innerText = "Upload failed!";
+                console.error("Error:", error);
+            }
+        });
+ 
+        async function loadFiles() {
+            try {
+                const response = await fetch("http://10.25.0.157:8080/files");
+                const files = await response.json();
+ 
+                const fileList = document.getElementById("fileList");
+                fileList.innerHTML = "";
+ 
+                files.forEach(file => {
+                    const listItem = document.createElement("li");
+                    listItem.innerHTML = `
+                        <span>${file.fileName}</span>
+                        <button onclick="downloadFile(${file.id})">Download</button>
+                    `;
+                    fileList.appendChild(listItem);
+                });
+            } catch (error) {
+                console.error("Failed to load files:", error);
+            }
+        }
+ 
+        function downloadFile(id) {
+            window.location.href = `http://10.25.0.157::8080/download/${id}`;
+        }
+ 
+        // Load files on page load
+        loadFiles();
+    </script>
+ 
+</body>
+</html>
+ 
