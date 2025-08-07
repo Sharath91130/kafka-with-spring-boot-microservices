@@ -1,0 +1,25 @@
+package com.ecommerce.payment.Consumer;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
+
+import com.ecommerce.Classes.PaymentResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@Component
+public class KafkaConsumer {
+	
+	@Autowired
+	ObjectMapper mapper;
+	@Autowired
+	KafkaProducer kafkaProducer;
+	@KafkaListener(groupId = "payment",topics = "payment-topic")
+	public void PaymentConsumer(Object object) {
+		PaymentResponse convertValue = mapper.convertValue(object, PaymentResponse.class);
+		System.out.println(convertValue.getAmount() + " " + convertValue.getOrderId() + " " + convertValue.getStatus());
+		kafkaProducer.sendTOOrderPaymentDetails(convertValue);
+		
+	}
+
+}

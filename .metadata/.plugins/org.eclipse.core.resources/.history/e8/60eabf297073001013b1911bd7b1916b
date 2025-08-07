@@ -1,0 +1,32 @@
+package com.ecommerce.SerilazerClass;
+public class MultiTypeDeserializer implements Deserializer<Object> {
+
+    private final JsonDeserializer<Object> jsonDeserializer = new JsonDeserializer<>();
+
+    @Override
+    public Object deserialize(String topic, byte[] data) {
+        // Example: Use heuristics or headers to guess type
+        if (data == null || data.length == 0) return null;
+
+        // Try String
+        try {
+            String stringValue = new String(data, StandardCharsets.UTF_8);
+            if (stringValue.matches("^[a-zA-Z\\s]+$")) {
+                return stringValue;
+            }
+        } catch (Exception ignored) {}
+
+        // Try Integer
+        if (data.length == 4) {
+            return ByteBuffer.wrap(data).getInt();
+        }
+
+        // Fall back to JSON
+        try {
+            jsonDeserializer.setDefaultValueType(MyCustomObject.class); // or detect dynamically
+            return jsonDeserializer.deserialize(topic, data);
+        } catch (Exception e) {
+            throw new SerializationException("Unknown data type received", e);
+        }
+    }
+}

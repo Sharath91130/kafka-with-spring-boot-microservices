@@ -1,0 +1,23 @@
+package com.ecommerce.payment.Consumer;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
+
+import com.ecommerce.Classes.PaymentResponse;
+
+@Component
+public class KafkaProducer {
+	@Autowired
+	KafkaTemplate<String, Object> kafkaTemplate;
+	
+	
+	public void sendTOOrderPaymentDetails(Object payment) {
+		
+		kafkaTemplate.send("paymentdone-topic", payment);
+	}
+
+
+	
+
+}

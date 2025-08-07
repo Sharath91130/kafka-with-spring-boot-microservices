@@ -1,0 +1,25 @@
+package com.ecommerce.KafkaConfig;
+
+import com.ecommerce.Dto.OrderRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+public class KafkaProducer {
+	@Autowired
+	KafkaTemplate<String, String> kafkaTemplate;
+	
+	
+	
+
+	public void sendPaymentMessage(String amount){
+		kafkaTemplate.send("payment-topic",amount);
+	}
+
+	
+	
+	public void sendToInventoryServices(String orderId) {
+		kafkaTemplate.send("topic",orderId);
+	}
+}

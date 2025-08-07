@@ -1,0 +1,47 @@
+package com.ecommerce.SerilazerClass;
+
+import org.apache.kafka.common.errors.SerializationException;
+import org.apache.kafka.common.serialization.Deserializer;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+
+public class MultiTypeDeserializer implements Deserializer<Object> {
+
+    private final JsonDeserializer<Object> jsonDeserializer;
+
+    public MultiTypeDeserializer() {
+        this.jsonDeserializer = new JsonDeserializer<>();
+        // Allow all packages or restrict to your package for security
+        this.jsonDeserializer.addTrustedPackages("*");
+
+        // You can set the default type (change this to your actual POJO class)
+        ((Object) this.jsonDeserializer).setDefaultValueType(MyCustomObject.class);
+    }
+
+    @Override
+    public Object deserialize(String topic, byte[] data) {
+        if (data == null || data.length == 0) return null;
+
+        // Try String
+        try {
+            String stringValue = new String(data, StandardCharsets.UTF_8);
+            if (stringValue.matches("^[a-zA-Z\\s]+$")) {
+                return stringValue;
+            }
+        } catch (Exception ignored) {}
+
+        // Try Integer
+        if (data.length == 4) {
+            return ByteBuffer.wrap(data).getInt();
+        }
+
+        // Fall back to JSON
+        try {
+            return jsonDeserializer.deserialize(topic, data);
+        } catch (Exception e) {
+            throw new SerializationException("Unknown data type received", e);
+        }
+    }
+}

@@ -1,0 +1,28 @@
+package com.ecommerce.KafkaConfig;
+@Configuration
+@EnableKafka
+public class KafkaConsumerConfig {
+
+    @Bean
+    public ConsumerFactory<String, PaymentResponse> consumerFactory() {
+        JsonDeserializer<PaymentResponse> deserializer = new JsonDeserializer<>(PaymentResponse.class);
+        deserializer.setRemoveTypeHeaders(false);
+        deserializer.addTrustedPackages("*");
+        deserializer.setUseTypeMapperForKey(true);
+
+        Map<String, Object> config = new HashMap<>();
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, "paymentService");
+        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, deserializer);
+
+        return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), deserializer);
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, PaymentResponse> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, PaymentResponse> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
+        return factory;
+    }
+}

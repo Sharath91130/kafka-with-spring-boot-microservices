@@ -1,0 +1,5 @@
+package com.ecommerce.payment.Consumer;
+
+public class KafkaConsumer {
+
+}

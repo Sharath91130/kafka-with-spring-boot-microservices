@@ -1,0 +1,8 @@
+package com.ecommerce.model;
+
+public class MyCustomObject {
+    private Integer id;
+    private String name;
+    
+    // Getters and setters
+}

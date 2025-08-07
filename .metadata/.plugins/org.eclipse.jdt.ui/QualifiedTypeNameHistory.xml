@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
+    <fullyQualifiedTypeName name="jakarta.annotation.Resource"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RestController"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestMapping"/>
+    <fullyQualifiedTypeName name="org.springframework.http.ResponseEntity"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
+    <fullyQualifiedTypeName name="com.ecommerce.KafkaConfig.KafkaProducer"/>
+    <fullyQualifiedTypeName name="lombok.Data"/>
+    <fullyQualifiedTypeName name="org.springframework.kafka.annotation.KafkaListener"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <fullyQualifiedTypeName name="org.springframework.kafka.core.KafkaTemplate"/>
+    <fullyQualifiedTypeName name="java.lang.Object"/>
+    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+    <fullyQualifiedTypeName name="java.lang.Integer"/>
+    <fullyQualifiedTypeName name="com.ecommerce.Classes.PaymentResponse"/>
+    <fullyQualifiedTypeName name="java.rmi.server.UID"/>
+    <fullyQualifiedTypeName name="com.ecommerce.Dto.PaymentResponse"/>
+    <fullyQualifiedTypeName name="com.ecommerce.SerilazerClass.MyCustomObject"/>
+    <fullyQualifiedTypeName name="com.ecommerce.payment.Consumer.PaymentResponse"/>
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
+    <fullyQualifiedTypeName name="org.springframework.context.annotation.Configuration"/>
+</qualifiedTypeNameHistroy>

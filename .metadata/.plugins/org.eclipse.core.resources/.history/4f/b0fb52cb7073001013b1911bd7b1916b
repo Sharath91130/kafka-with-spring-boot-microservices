@@ -1,0 +1,32 @@
+package com.ecommerce.payment.Consumer;
+
+import java.rmi.server.UID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
+
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@Component
+public class KafkaConsumer {
+	
+	@Autowired
+	ObjectMapper mapper;
+	@Autowired
+	KafkaProducer kafkaProducer;
+	
+	@KafkaListener(groupId = "payment",topics = "payment-topic")
+	public void PaymentConsumer1(String amount) {
+
+		 PaymentResponse paymentResponse=new PaymentResponse();
+		 paymentResponse.setAmount(amount);
+		 paymentResponse.setStatus("success");
+		 paymentResponse.setOrderId("ord123");
+		 
+		 kafkaProducer.sendTOOrderPaymentDetails(paymentResponse);
+		 
+	}
+
+}
